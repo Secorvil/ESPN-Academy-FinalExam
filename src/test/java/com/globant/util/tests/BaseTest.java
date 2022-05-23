@@ -3,9 +3,7 @@ package com.globant.util.tests;
 import com.globant.drivers.Driver;
 import com.globant.screens.HomePage;
 import org.apache.log4j.Logger;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
 /**
  * Test class for basic setup and/or common methods.
@@ -40,7 +38,7 @@ public class BaseTest {
      * @param browser Name of the browser
      * @param url URL of the page that will be automated
      */
-    @BeforeMethod(alwaysRun = true)
+    @BeforeTest(alwaysRun = true)
     @Parameters({"browser", "url"})
     public void setUpDriver(String browser, String url) {
         try {
@@ -58,7 +56,7 @@ public class BaseTest {
      *
      * Delete cookies and close the driver session.
      */
-    @AfterMethod(alwaysRun = true)
+    @AfterTest(alwaysRun = true)
     public void dispose() {
         if (driver.getDriver() != null) {
             driver.getDriver().manage().deleteAllCookies();

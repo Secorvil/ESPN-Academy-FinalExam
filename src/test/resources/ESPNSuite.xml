@@ -5,7 +5,56 @@
   <parameter name="browser" value="chrome"/>
   <parameter name="url" value="https://www.espnqa.com/?src=com&amp;_adblock=true&amp;espn=cloud"/>
 
-  <test name="Log in Test">
+  <test name="Login elements exist test" preserve-order="true">
+    <groups>
+      <run>
+        <include name="loginTest"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.globant.tests.ESPNTest"/>
+    </classes>
+  </test>
+
+  <test name="Signup elements exist test" preserve-order="true">
+    <groups>
+      <run>
+        <include name="signupTest"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.globant.tests.ESPNTest"/>
+    </classes>
+  </test>
+
+  <test name="Watch carousel is present test" preserve-order="true">
+    <groups>
+      <run>
+        <include name="watchCarouselTest"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.globant.tests.ESPNTest"/>
+    </classes>
+  </test>
+
+  <test name="Watch carousel cards work test" preserve-order="true">
+    <groups>
+      <run>
+        <include name="watchCardsTest"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="com.globant.tests.ESPNTest"/>
+    </classes>
+  </test>
+
+  <test name="User logged out test" preserve-order="true">
+    <groups>
+      <run>
+        <include name="logoutTest"/>
+      </run>
+    </groups>
     <classes>
       <class name="com.globant.tests.ESPNTest"/>
     </classes>

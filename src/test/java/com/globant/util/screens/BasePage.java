@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -60,6 +61,8 @@ public class BasePage {
     }
 
     /**
+     * @author Sebastián Correa
+     *
      * This method performs a scroll, both horizontally and vertically, using pixels as units.
      *
      * @param xAxisPixels number of pixels to scroll horizontally
@@ -68,5 +71,19 @@ public class BasePage {
     public void scroll(int xAxisPixels, int yAxisPixels) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scroll(" + xAxisPixels + ", " + yAxisPixels + ")");
+    }
+
+    /**
+     * @author Sebastián Correa
+     *
+     * This method performs a hover action on a specified element.
+     *
+     * @param element the WebElement where the hover will be performed
+     */
+    public void hoverOnElement(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver,15);
+        Actions action = new Actions(driver);
+        wait.until(ExpectedConditions.visibilityOf(element));
+        action.moveToElement(element).perform();
     }
 }

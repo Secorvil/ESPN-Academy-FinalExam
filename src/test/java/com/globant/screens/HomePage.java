@@ -4,6 +4,11 @@ import com.globant.util.screens.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * First visible page when application loads.
@@ -11,6 +16,15 @@ import org.openqa.selenium.support.FindBy;
  * @author sebastian.cv
  */
 public class HomePage extends BasePage {
+
+    @FindBy(id = "global-user-trigger")
+    private WebElement userAccessButton;
+
+    @FindBy(css = "li.user li.display-user span")
+    private WebElement userFirstNameSpan;
+
+    @FindBy(css = ".hover ul.account-management > li:nth-child(9) > a")
+    private WebElement logOutButton;
 
     @FindBy(css = "#sideLogin-left-rail button[tref=\"/members/v3_1/login\"]")
     private WebElement sideLogInButton;
@@ -45,6 +59,9 @@ public class HomePage extends BasePage {
     @FindBy(css = "button[data-testid=\"REGISTRATION-close\"]")
     private WebElement closeButton;
 
+    @FindBy(css = "li.pillar.watch")
+    private WebElement watchButton;
+
     /**
      * Basic constructor.
      *
@@ -52,6 +69,54 @@ public class HomePage extends BasePage {
      */
     public HomePage(WebDriver driver) {
         super(driver);
+    }
+
+    /**
+     * Get the user management button.
+     * @return WebElement user access button
+     */
+    public WebElement getUserAccessButton() {
+        return userAccessButton;
+    }
+
+    /**
+     * Set a WebElement as user access button.
+     * @param userAccessButton new userAccessButton element
+     */
+    public void setUserAccessButton(WebElement userAccessButton) {
+        this.userAccessButton = userAccessButton;
+    }
+
+    /**
+     * Get the span container for user's first name.
+     * @return WebElement of user's first name span
+     */
+    public WebElement getUserFirstNameSpan() {
+        return userFirstNameSpan;
+    }
+
+    /**
+     * Set a WebElement as span of user's first name.
+     * @param userFirstNameSpan new userFirstNameSpan element
+     */
+    public void setUserFirstNameSpan(WebElement userFirstNameSpan) {
+        this.userFirstNameSpan = userFirstNameSpan;
+    }
+
+    /**
+     * Get dropdown menu "Log Out" button.
+     * @return WebElement Log out button
+     */
+    public WebElement getLogOutButton() {
+        return logOutButton;
+    }
+
+    /**
+     * Set a WebElement as "Log Out" button.
+     * @param logOutButton new logOutButton element
+     */
+    public void setLogOutButton(WebElement logOutButton) {
+        this.logOutButton = logOutButton;
     }
 
     /**
@@ -231,6 +296,34 @@ public class HomePage extends BasePage {
     }
 
     /**
+     * Get the "Watch" button.
+     * @return WebElement of Watch button
+     */
+    public WebElement getWatchButton() {
+        return watchButton;
+    }
+
+    /**
+     * Set a WebElement as the "Watch" button.
+     * @param watchButton new watchButton element
+     */
+    public void setWatchButton(WebElement watchButton) {
+        this.watchButton = watchButton;
+    }
+
+    /**
+     * @author Sebastián Correa
+     *
+     * Navigate to Watch page from Home page.
+     *
+     * @return WatchPage instance.
+     */
+    public WatchPage goToWatchPage() {
+        click(watchButton);
+        return new WatchPage(driver);
+    }
+
+    /**
      * @author Sebastián Correa
      *
      * This method scrolls down to click the left side "Log in" button.
@@ -238,5 +331,41 @@ public class HomePage extends BasePage {
     public void clickSideLogInButton() {
         scroll(0, 500);
         click(sideLogInButton);
+    }
+
+    /**
+     * @author Sebastián Correa
+     *
+     * This method creates a user account. Useful when testing functionalities where the user must be logged.
+     *
+     * @param firstName First name of the user
+     * @param lastName Last name of the user
+     * @param email Email of the user
+     * @param password Alphanumerical string as account password
+     */
+    public void createUserAccount(String firstName, String lastName, String email, String password) {
+        WebDriverWait wait = new WebDriverWait(driver,15);
+        List<WebElement> signUpInputs = Arrays.asList(firstNameInput, lastNameInput, emailInput, passwordInput);
+        wait.until(ExpectedConditions.visibilityOfAllElements(signUpInputs));
+        firstNameInput.sendKeys(firstName);
+        lastNameInput.sendKeys(lastName);
+        emailInput.sendKeys(email);
+        passwordInput.sendKeys(password);
+        wait.until(ExpectedConditions.visibilityOf(submitSignUpButton));
+        submitSignUpButton.click();
+    }
+
+    /**
+     * @author Sebastián Correa
+     *
+     * This method checks if the "Log In" button is visible after the user logs out.
+     *
+     * @return true if the "Log In" button is visible, otherwise false
+     */
+    public boolean checkIfUserLoggedOut() {
+        WebDriverWait wait = new WebDriverWait(driver,15);
+        wait.until(ExpectedConditions.visibilityOf(userAccessButton));
+        scroll(0, 500);
+        return isElementVisible(sideLogInButton);
     }
 }
